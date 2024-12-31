@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Order Details</h1>
+    </header>
+    <main>
+        <div id="order-details">
+            <!-- Order details will be dynamically displayed here -->
+        </div>
+        <button onclick="window.print()">Print Order</button>
+    </main>
+    <footer>
+        <p>&copy; 2024 PrintCraft Store. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Parse query parameters from the URL
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        const email = params.get('email');
+        const cart = JSON.parse(params.get('cart'));
+
+        // Display order details
+        const orderDetailsDiv = document.getElementById('order-details');
+        orderDetailsDiv.innerHTML = `
+            <h2>Customer: ${name}</h2>
+            <p>Email: ${email}</p>
+            <h3>Items:</h3>
+            <ul>
+                ${cart.map(item => `
+                    <li>${item.name} - $${item.price} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}</li>
+                `).join('')}
+            </ul>
+            <h3>Total: $${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</h3>
+        `;
+    </script>
+</body>
+</html>
